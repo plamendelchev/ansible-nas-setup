@@ -3,6 +3,7 @@ alias 1='top -Sc -d 1'
 alias ls='ls --group-directories-first --color=auto -X1v'
 alias ll='ls -lAh'
 alias dps="docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}'"
+alias sudo='sudo '
 
 # Prompt
 declare -A colors
