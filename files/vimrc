@@ -1,0 +1,114 @@
+" Show line number
+set number
+
+" Show total number of lines
+set ruler
+
+" Encoding
+set encoding=utf-8
+
+" Display status line (file name, etc.)
+set laststatus=2
+
+" Highlighted search
+set hlsearch
+
+" Highlight pattern while searching
+set incsearch
+
+" Enable recursive saerch as well as tab-completition (:find )
+set path+=**
+
+" Display all matching files when auto completing
+set wildmenu
+
+" Focus on current line horizontally
+set cursorline
+
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+nnoremap <space> za
+
+" Fix behaviour of del key
+set backspace=indent,eol,start
+
+" Autocompletition
+" ctrl + n to start and go to next suggestion
+" ctrl + p to got to previous suggestion
+" ctrl + x + f to autocomplete paths
+
+" Tweaks for browsing
+let g:netrw_banner=0        " disable annoying banner
+let g:netrw_browse_split=4  " open in prior window
+let g:netrw_altv=1          " open splits to the right
+let g:netrw_liststyle=3     " tree view
+let g:netrw_list_hide=netrw_gitignore#Hide()
+let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+
+" Highlight syntax
+syntax enable
+
+" Vundle setup
+set nocompatible              " required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+" add all your plugins here (note older versions of Vundle
+" used Bundle instead of Plugin)
+
+Plugin 'Yggdroot/indentLine'
+Plugin 'vim-python/python-syntax'
+Plugin 'vim-scripts/indentpython.vim'
+Plugin 'glench/vim-jinja2-syntax'
+Plugin 'godlygeek/tabular'
+Plugin 'preservim/vim-markdown'
+Plugin 'morhetz/gruvbox'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+" indentLine settings
+let g:indentLine_char = '│'
+
+" python-syntax settings
+let g:python_highlight_all = 1
+
+" Set Vim's theme
+set termguicolors
+autocmd vimenter * ++nested colorscheme gruvbox
+set background=dark
+
+" Indentation for different file types
+" Default style
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set expandtab
+set autoindent
+set fileformat=unix
+
+autocmd Filetype markdown set
+	\ colorcolumn=100
+  \ textwidth=100
+
+autocmd Filetype python set
+  \ tabstop=4
+  \ softtabstop=4
+  \ shiftwidth=4
+
+autocmd Filetype sh set
+  \ filetype=bash
+
+" disable arrow keys
+"noremap <Up> <Nop>
+"noremap <Down> <Nop>
+"noremap <Left> <Nop>
+"noremap <Right> <Nop>

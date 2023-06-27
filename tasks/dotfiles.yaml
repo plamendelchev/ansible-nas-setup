@@ -1,0 +1,29 @@
+---
+- name: Set up global bash profile
+  copy:
+    src: bash_profile
+    dest: /etc/profile.d/paco_profile.sh
+
+- name: Set up vundle
+  git:
+    repo: https://github.com/VundleVim/Vundle.vim.git
+    dest: ~/.vim/bundle/Vundle.vim
+
+- name: Set up vimrc
+  copy:
+    src: vimrc
+    dest: ~/.vimrc
+
+- name: Install vim plugins
+  command:
+    cmd: vim +PluginInstall +qall
+
+- name: Set up git config
+  copy:
+    src: gitconfig
+    dest: ~/.gitconfig
+
+- name: Set up git ignore
+  copy:
+    src: gitignore
+    dest: ~/.gitignore

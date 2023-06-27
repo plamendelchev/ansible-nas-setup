@@ -1,0 +1,13 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Plamen Delchev
+	email = plamen.delchev@gmail.com
+[color]
+	ui = true
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore
+[init]
+	defaultBranch = master
+[alias]
+	logline = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit

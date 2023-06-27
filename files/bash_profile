@@ -1,0 +1,28 @@
+# Aliases
+alias 1='top -Sc -d 1'
+alias ls='ls --group-directories-first --color=auto -X1v'
+alias ll='ls -lAh'
+alias dps="docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}'"
+
+# Prompt
+declare -A colors
+colors['black']='\033[0;30]'
+colors['red']='\033[0;31m'
+colors['green']='\033[0;32m'
+colors['brown']='\033[0;32m'
+colors['blue']='\033[0;34m'
+colors['purple']='\033[0;35m'
+colors['cyan']='\033[0;36m'
+colors['gray']='\033[0;37m'
+colors['reset']='\033[0;0m'
+
+PS1="\u@${colors['green']}\h${colors['reset']} \w \$ "
+
+# Environmental variables
+export EDITOR='vim'
+
+# Bash history
+export HISTTIMEFORMAT='%F %T %z'
+export HISTSIZE='1000000'
+export HISTFILESIZE='10000000'
+export HISTCONTROL='ignoredups'

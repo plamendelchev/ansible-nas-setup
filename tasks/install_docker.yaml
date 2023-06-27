@@ -1,0 +1,57 @@
+---
+- name: Add docker repository
+  command:
+    cmd: dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    creates: /etc/yum.repos.d/docker-ce.repo
+
+- name: Install docker
+  package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+      - shadow-utils
+      - fuse-overlayfs
+
+- name: Stop and Disable docker service
+  service:
+    name: docker.service
+    enabled: false
+    state: stopped
+
+- name: Stop and Disable docker socket
+  service:
+    name: docker.socket
+    enabled: false
+    state: stopped
+
+- name: Install docker rootless
+  command:
+    cmd: /usr/bin/dockerd-rootless-setuptool.sh install
+    creates: ~/.config/systemd/user/docker.service
+  become: false
+
+- name: Update data-dir to docker rootless
+  lineinfile:
+    path: ~/.config/systemd/user/docker.service
+    regexp: '^ExecStart='
+    line: ExecStart=/usr/bin/dockerd-rootless.sh --data-root /nas
+  notify: Reload systemd user daemon
+  become: false
+
+- name: Allow exposing privileged ports to docker
+  capabilities:
+    path: /usr/bin/rootlesskit
+    capability: cap_net_bind_service+ep
+    state: present
+  notify: Restart docker
+
+- name: Start and Enable docker rootless
+  systemd:
+    name: docker
+    scope: user
+    enabled: true
+    state: started
+  become: false
