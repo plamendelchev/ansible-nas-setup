@@ -4,6 +4,18 @@
     name: "{{ username }}"
 
 
+- name: Copy WoL service
+  copy:
+    src: wol.service
+    dest: /etc/systemd/system/wol@.service
+
+- name: Start and Enable WoL
+  service:
+    name: "wol@{{ ansible_default_ipv4.interface }}.service"
+    enabled: true
+    state: started
+
+
 - name: Set up motd
   copy:
     src: motd.txt
