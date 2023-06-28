@@ -13,25 +13,10 @@
     enabled: true
 
 - name: Set up iptables rules
-  copy:
+  template:
+    src: iptables.jinja2
     dest: /etc/sysconfig/iptables
     mode: 0600
-    content: |
-      *filter
-      :INPUT DROP [0:0]
-      :FORWARD DROP [0:0]
-      :OUTPUT ACCEPT [0:0]
-      -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-      -A INPUT -i lo -j ACCEPT
-      -A INPUT -m conntrack --ctstate INVALID -j DROP
-      -A INPUT -p icmp -m icmp --icmp-type 8 -m conntrack --ctstate NEW -j ACCEPT
-      -A INPUT -p udp -m conntrack --ctstate NEW -j ACCEPT
-      -A INPUT -p tcp --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
-      -A INPUT -p udp -j REJECT --reject-with icmp-port-unreachable
-      -A INPUT -p tcp -j REJECT --reject-with tcp-reset
-      -A INPUT -j REJECT --reject-with icmp-proto-unreachable
-      -A INPUT -p tcp --dport 22 -j ACCEPT
-      COMMIT
   notify: Restart iptables
 
 - name: Set rp_filter kernel parameter

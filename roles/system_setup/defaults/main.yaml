@@ -2,6 +2,8 @@
 username: paco
 hostname: rod
 
+ssh_port: 8173
+
 docker_data_root: /nas
 
 groups:

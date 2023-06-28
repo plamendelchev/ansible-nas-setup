@@ -1,10 +1,12 @@
 ---
 - name: Update sshd config
-  copy:
-    src: sshd_config
+  template:
+    src: sshd_config.jinja2
     dest: /etc/ssh/sshd_config.d/00_paco.conf
     validate: 'sshd -T -f %s'
-  notify: Restart sshd
+  notify: 
+    - Restart sshd
+    - SELinux new sshd port
 
 - name: Tune powertop
   command:

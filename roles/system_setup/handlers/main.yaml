@@ -25,3 +25,10 @@
 - name: Rebuild initramfs
   command:
     cmd: dracut --hostonly --force
+
+- name: SELinux new sshd port
+  seport:
+    ports: "{{ ssh_port }}"
+    proto: tcp
+    setype: ssh_port_t
+    state: present
