@@ -2,6 +2,9 @@
 username: nas
 hostname: nas
 
+git_user: User Name
+git_email: example@email.com
+
 ssh_port: 22
 
 docker_data_root: /nas
