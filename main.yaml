@@ -1,7 +1,10 @@
 ---
 - name: Configure host.
-  hosts: rod
+  hosts: all
   become: true
+
+  vars_files:
+    - config.yaml
 
   roles:
     - role: system_setup

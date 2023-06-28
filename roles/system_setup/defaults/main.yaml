@@ -1,8 +1,8 @@
 ---
-username: paco
-hostname: rod
+username: nas
+hostname: nas
 
-ssh_port: 8173
+ssh_port: 22
 
 docker_data_root: /nas
 
