@@ -3,34 +3,5 @@
   hosts: rod
   become: true
 
-  vars_files:
-    - config.yaml
-
-  handlers:
-    - import_tasks: handlers/main.yaml
-
-  tasks:
-    - import_tasks: tasks/update_system.yaml
-      tags:
-        - update_system
-
-    - import_tasks: tasks/install_packages.yaml
-      tags:
-        - install_packages
-
-    - import_tasks: tasks/setup_user.yaml
-      tags:
-        - setup_user
-
-    - import_tasks: tasks/setup_system.yaml
-      tags:
-        - setup_system
-
-    - import_tasks: tasks/install_docker.yaml
-      tags:
-        - install_docker
-
-    - import_tasks: tasks/dotfiles.yaml
-      tags:
-        - dotfiles
-      become: false
+  roles:
+    - role: system_setup

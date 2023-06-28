@@ -20,7 +20,3 @@
       - iptables-nft-services
       - powertop
     state: present
-
-
-#- name: Install Docker
-#- name: Install Cloudflared

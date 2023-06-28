@@ -1,0 +1,50 @@
+---
+  - name: Update System
+    import_tasks: update.yaml
+    tags:
+      - setup
+      - update
+
+  - name: Setup System 
+    import_tasks: system.yaml
+    tags:
+      - setup
+      - system
+
+  - name: Install Packages
+    import_tasks: packages.yaml
+    tags:
+      - setup
+      - packages
+
+  - name: Setup Services
+    import_tasks: services.yaml
+    tags:
+      - setup
+      - services
+
+  - name: Setup Firewall
+    import_tasks: firewall.yaml
+    tags:
+      - setup
+      - firewall
+
+  - name: Setup hibernate
+    import_tasks: hibernate.yaml
+    tags:
+      - setup
+      - hibernate
+
+  - name: Install Docker
+    import_tasks: docker.yaml
+    tags:
+      - setup
+      - packages
+      - docker
+
+  - name: Setup dotfiles
+    import_tasks: dotfiles.yaml
+    become: false
+    tags:
+      - setup
+      - dotfiles

@@ -1,0 +1,22 @@
+---
+- name: Change hostname to "{{ hostname }}"
+  hostname:
+    name: "{{ hostname }}"
+
+- name: Ensure non-root user is created
+  user:
+    name: "{{ username }}"
+    groups:
+      - wheel
+    append: true
+    update_password: on_create
+
+- name: Set passwordless sudo for paco
+  community.general.sudoers:
+    name: allow-all-wheel
+    group: wheel
+    commands: ALL
+    host: ALL
+    nopassword: true
+    state: present
+    validation: required

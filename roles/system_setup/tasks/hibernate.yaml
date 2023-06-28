@@ -1,0 +1,35 @@
+---
+- name: Set vm.swappiness=1 kernel parameter
+  sysctl:
+    name: vm.swappiness
+    value: 1
+    sysctl_file: /etc/sysctl.d/01-swappiness.conf
+    state: present
+
+- name: Include resume module in initramfs
+  copy:
+    src: resume-from-hibernate.conf
+    dest: /etc/dracut.conf.d/resume-from-hibernate.conf
+  notify: Rebuild initramfs
+
+- name: Display swap device and store in variable
+  shell:
+    cmd: "swapon --show=name --noheadings | cut -d '/' -f 3"
+  register: swap_device
+
+- name: Display swap device MAJ:MIN numbers and store in variable
+  command:
+    cmd: "lsblk -n -o 'MAJ:MIN' /dev/{{ swap_device.stdout }}"
+  register: swap_majmin
+
+- name: Set resume kernel parameter
+  sysctl:
+    name: resume
+    value: "{{ ansible_facts['device_links']['uuids'][swap_device.stdout][0] }}"
+    sysctl_file: /etc/sysctl.d/02-resume.conf
+    state: present
+    ignoreerrors: true
+
+- name: Enable hibernate
+  shell:
+    cmd: "echo {{ swap_majmin.stdout }} > /sys/power/resume"
