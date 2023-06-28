@@ -1,17 +1,9 @@
 ---
 - name: Update sshd config
   copy:
+    src: sshd_config
     dest: /etc/ssh/sshd_config.d/00_paco.conf
-    mode: 0644
     validate: 'sshd -T -f %s'
-    content: |
-      PasswordAuthentication no
-      PermitRootLogin no
-      UseDNS no
-      PermitEmptyPasswords no
-      ChallengeResponseAuthentication no
-      GSSAPIAuthentication no
-      X11Forwarding no
   notify: Restart sshd
 
 - name: Tune powertop

@@ -37,7 +37,7 @@
   lineinfile:
     path: ~/.config/systemd/user/docker.service
     regexp: '^ExecStart='
-    line: ExecStart=/usr/bin/dockerd-rootless.sh --data-root /nas
+    line: "ExecStart=/usr/bin/dockerd-rootless.sh --data-root {{ docker_data_root }}"
   notify: Reload systemd user daemon
   become: false
 

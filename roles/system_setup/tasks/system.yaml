@@ -3,7 +3,7 @@
   hostname:
     name: "{{ hostname }}"
 
-- name: Ensure non-root user is created
+- name: Ensure non-root user "{{ username }}" is created
   user:
     name: "{{ username }}"
     groups:
@@ -11,7 +11,7 @@
     append: true
     update_password: on_create
 
-- name: Set passwordless sudo for paco
+- name: Set passwordless sudo for wheel group
   community.general.sudoers:
     name: allow-all-wheel
     group: wheel

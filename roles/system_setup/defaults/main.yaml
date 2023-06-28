@@ -1,3 +1,21 @@
 ---
 username: paco
 hostname: rod
+
+docker_data_root: /nas
+
+groups:
+  - '@Standard'
+  - '@Headless Management'
+  - '@Server product core'
+  - '@Common NetworkManager submodules'
+  - '@Console Internet Tools'
+  - '@Development Tools'
+  - '@RPM Development Tools'
+  - '@Hardware Monitoring Utilities'
+
+packages:
+  - iperf3
+  - iptables-utils
+  - iptables-nft-services
+  - powertop

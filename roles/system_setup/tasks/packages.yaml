@@ -1,22 +1,10 @@
 ---
 - name: Install Groups
   package:
-    name:
-      - '@Standard'
-      - '@Headless Management'
-      - '@Server product core'
-      - '@Common NetworkManager submodules'
-      - '@Console Internet Tools'
-      - '@Development Tools'
-      - '@RPM Development Tools'
-      - '@Hardware Monitoring Utilities'
+    name: "{{ groups }}"
     state: present
 
 - name: Install Packages
   package:
-    name:
-      - iperf3
-      - iptables-utils
-      - iptables-nft-services
-      - powertop
+    name: "{{ packages }}"
     state: present
