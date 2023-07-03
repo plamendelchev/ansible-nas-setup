@@ -1,0 +1,7 @@
+{
+  "data-root": "{{ docker_data_root }}",
+  "hosts": [
+    "unix:///run/user/{{ docker_username_uid }}/docker.sock",
+    "tcp://127.0.0.1:{{ docker_daemon_port }}"
+  ]
+}

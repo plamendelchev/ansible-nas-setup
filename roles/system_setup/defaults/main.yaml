@@ -1,5 +1,5 @@
 ---
-username: nas
+username: user
 hostname: nas
 
 git_user: User Name
@@ -7,7 +7,11 @@ git_email: example@email.com
 
 ssh_port: 22
 
-docker_data_root: /nas
+docker_username: nas
+docker_username_uid: 2000
+docker_data_root: /nas/docker
+docker_data_parent: /nas
+docker_daemon_port: 2375
 
 groups:
   - '@Standard'
@@ -25,3 +29,5 @@ packages:
   - iptables-nft-services
   - powertop
   - sysstat
+  - systemd-container
+  - python3-pip

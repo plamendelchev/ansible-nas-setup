@@ -15,43 +15,79 @@
       - shadow-utils
       - fuse-overlayfs
 
-- name: Stop and Disable docker service
-  service:
-    name: docker.service
-    enabled: false
-    state: stopped
-
-- name: Stop and Disable docker socket
-  service:
-    name: docker.socket
-    enabled: false
-    state: stopped
-
 - name: Install docker rootless
+  become: true
+  become_user: "{{ docker_username }}"
+  environment:
+    - XDG_RUNTIME_DIR: "/run/user/{{ docker_username_uid }}"
   command:
     cmd: /usr/bin/dockerd-rootless-setuptool.sh install
     creates: ~/.config/systemd/user/docker.service
-  become: false
 
-- name: Update data-dir to docker rootless
-  lineinfile:
-    path: ~/.config/systemd/user/docker.service
-    regexp: '^ExecStart='
-    line: "ExecStart=/usr/bin/dockerd-rootless.sh --data-root {{ docker_data_root }}"
-  notify: Reload systemd user daemon
-  become: false
+- name: Ensure docker data parent "{{ docker_data_parent }}" exists
+  file:
+    path: "{{ docker_data_parent }}"
+    owner: "{{ docker_username }}"
+    group: "{{ docker_username }}"
+    state: directory
+
+- name: Ensure docker data root "{{ docker_data_root }}" exists
+  file:
+    path: "{{ docker_data_root }}"
+    owner: "{{ docker_username }}"
+    group: "{{ docker_username }}"
+    state: directory
 
 - name: Allow exposing privileged ports to docker
   capabilities:
     path: /usr/bin/rootlesskit
     capability: cap_net_bind_service+ep
     state: present
-  notify: Restart docker
+
+- name: Add user "{{ username }}" to group of docker "{{ docker_username }}"
+  user:
+    name: "{{ username }}"
+    groups: "{{ docker_username }}"
+    append: yes
+
+- name: Update docker rootless systemd service file
+  block:
+    - name: Set custom data-root
+      ini_file:
+        path: "/home/{{ docker_username }}/.config/systemd/user/docker.service"
+        section: Service
+        option: ExecStart
+        value: /usr/bin/dockerd-rootless.sh --data-root /nas/docker -H unix:///tmp/docker.sock
+        owner: "{{ docker_username }}"
+        group: "{{ docker_username }}"
+        state: present
+        no_extra_spaces: true
+        exclusive: true
+    - name: Change socket ownership
+      ini_file:
+        path: "/home/{{ docker_username }}/.config/systemd/user/docker.service"
+        section: Service
+        option: ExecStartPost
+        value: chown "{{ docker_username }}:{{ docker_username }}" /tmp/docker.sock
+        owner: "{{ docker_username }}"
+        group: "{{ docker_username }}"
+        state: present
+        no_extra_spaces: true
+        exclusive: false
 
 - name: Start and Enable docker rootless
+  become: true
+  become_user: "{{ docker_username }}"
+  environment:
+    - XDG_RUNTIME_DIR: "/run/user/{{ docker_username_uid }}"
   systemd:
     name: docker
     scope: user
     enabled: true
     state: started
-  become: false
+  notify: Reload systemd user daemon
+
+- name: Enable lingering for "{{ docker_username }}"
+  command:
+    cmd: "loginctl enable-linger {{ docker_username }}"
+    creates: "/var/lib/systemd/linger/{{ docker_username }}"

@@ -11,12 +11,28 @@
     append: true
     update_password: on_create
 
-- name: Set passwordless sudo for wheel group
+- name: Ensure docker user "{{ docker_username }}" is created
+  user:
+    name: "{{ docker_username }}"
+    uid: "{{ docker_username_uid }}"
+    update_password: on_create
+
+- name: Set passwordless sudo for user "{{ username }}"
   community.general.sudoers:
-    name: allow-all-wheel
-    group: wheel
+    name: "allow-all-{{ username }}"
+    user: "{{ username }}"
     commands: ALL
     host: ALL
     nopassword: true
+    state: present
+    validation: required
+
+- name: Allow user "{{ username }}" to run commands as "{{ docker_username }}"
+  community.general.sudoers:
+    name: "allow-{{ username }}-as-{{ docker_username }}"
+    user: "{{ username }}"
+    runas: "{{ docker_username }}"
+    commands: ALL
+    setenv: true
     state: present
     validation: required
