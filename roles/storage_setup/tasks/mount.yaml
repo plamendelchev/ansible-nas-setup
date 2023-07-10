@@ -1,0 +1,70 @@
+---
+- name: Create fstab entry and mount root subvolume
+  mount:
+    src: "LABEL={{ nas_device_label }}"
+    path: "{{ nas_mountpoint }}"
+    fstype: btrfs
+    opts: defaults,noatime,subvol=@,compress=zstd:1
+    dump: 0
+    passno: 0
+    state: mounted
+
+- name: Create fstab entry and mount snapshots subvolume
+  mount:
+    src: "LABEL={{ nas_device_label }}"
+    path: "{{ nas_mountpoint }}/.snapshots"
+    fstype: btrfs
+    opts: defaults,noatime,subvol=@snapshots,compress=zstd:1
+    dump: 0
+    passno: 0
+    state: mounted
+
+- name: Create fstab entry and mount docker subvolume
+  mount:
+    src: "LABEL={{ nas_device_label }}"
+    path: "{{ nas_mountpoint }}/docker"
+    fstype: btrfs
+    opts: defaults,noatime,subvol=@docker,compress=zstd:1
+    dump: 0
+    passno: 0
+    state: mounted
+
+- name: Create fstab entry and mount images subvolume
+  mount:
+    src: "LABEL={{ nas_device_label }}"
+    path: "{{ nas_mountpoint }}/images"
+    fstype: btrfs
+    opts: defaults,noatime,subvol=@images,compress=zstd:1
+    dump: 0
+    passno: 0
+    state: mounted
+
+- name: Create fstab entry and mount videos subvolume
+  mount:
+    src: "LABEL={{ nas_device_label }}"
+    path: "{{ nas_mountpoint }}/videos"
+    fstype: btrfs
+    opts: defaults,noatime,subvol=@videos,compress=zstd:1
+    dump: 0
+    passno: 0
+    state: mounted
+
+- name: Create fstab entry and mount documents subvolume
+  mount:
+    src: "LABEL={{ nas_device_label }}"
+    path: "{{ nas_mountpoint }}/documents"
+    fstype: btrfs
+    opts: defaults,noatime,subvol=@documents,compress=zstd:1
+    dump: 0
+    passno: 0
+    state: mounted
+
+- name: Create fstab entry and mount media subvolume
+  mount:
+    src: "LABEL={{ nas_device_label }}"
+    path: "{{ nas_mountpoint }}/media"
+    fstype: btrfs
+    opts: defaults,noatime,subvol=@media,compress=zstd:1
+    dump: 0
+    passno: 0
+    state: mounted

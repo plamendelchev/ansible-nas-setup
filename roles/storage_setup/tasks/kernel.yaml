@@ -1,0 +1,18 @@
+---
+- name: Import ELRepo GPG key
+  rpm_key:
+    key: https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+    state: present
+
+- name: Install ELRepo repository
+  dnf:
+    name: https://www.elrepo.org/elrepo-release-9.el9.elrepo.noarch.rpm
+    state: present
+
+- name: Install kernel-lt
+  dnf:
+    name: kernel-lt
+    enablerepo: elrepo-kernel
+    state: present
+  notify:
+    - Reboot System

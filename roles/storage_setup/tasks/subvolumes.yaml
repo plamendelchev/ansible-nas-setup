@@ -1,0 +1,54 @@
+---
+- name: Create mountpoint
+  file:
+    path: "{{ nas_mountpoint }}"
+    state: directory
+    mode: "0770"
+    owner: "{{ nas_user }}"
+    group: "{{ nas_user }}"
+
+
+- name: Mount FS
+  mount:
+    src: "LABEL={{ nas_device_label }}"
+    path: "{{ nas_mountpoint }}"
+    fstype: btrfs
+    state: ephemeral
+  notify: 
+    - Unmount FS
+
+
+- name: Create root subvolume
+  btrfs_subvolume:
+    name: "{{ nas_mountpoint }}/@"
+    filesystem_label: "{{ nas_device_label }}"
+
+- name: Create snapshots subvolume
+  btrfs_subvolume:
+    name: "{{ nas_mountpoint }}/@snapshots"
+    filesystem_label: "{{ nas_device_label }}"
+
+- name: Create docker subvolume
+  btrfs_subvolume:
+    name: "{{ nas_mountpoint }}/@docker"
+    filesystem_label: "{{ nas_device_label }}"
+
+- name: Create images subvolume
+  btrfs_subvolume:
+    name: "{{ nas_mountpoint }}/@images"
+    filesystem_label: "{{ nas_device_label }}"
+
+- name: Create videos subvolume
+  btrfs_subvolume:
+    name: "{{ nas_mountpoint }}/@videos"
+    filesystem_label: "{{ nas_device_label }}"
+
+- name: Create documents subvolume
+  btrfs_subvolume:
+    name: "{{ nas_mountpoint }}/@documents"
+    filesystem_label: "{{ nas_device_label }}"
+
+- name: Create media subvolume
+  btrfs_subvolume:
+    name: "{{ nas_mountpoint }}/@media"
+    filesystem_label: "{{ nas_device_label }}"
