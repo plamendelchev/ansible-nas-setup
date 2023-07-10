@@ -1,0 +1,15 @@
+---
+- name: Import CentOS Kmods GPG key
+  rpm_key:
+    key: https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods
+    state: present
+
+- name: Install CentOS Kmods repository
+  dnf:
+    name: centos-release-kmods
+    state: present
+
+- name: Install btrfs-progs
+  dnf:
+    name: btrfs-progs
+    state: present

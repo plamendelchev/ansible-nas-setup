@@ -1,0 +1,14 @@
+---
+- name: Format primary disk with BTRFS
+  filesystem:
+    dev: "{{ nas_device }}"
+    fstype: btrfs
+    opts: "-L {{ nas_device_label }}"
+    state: present
+
+- name: Format backup disk with BTRFS
+  filesystem:
+    dev: "{{ nas_backup_device }}"
+    fstype: btrfs
+    opts: "-L {{ nas_backup_device_label }}"
+    state: present

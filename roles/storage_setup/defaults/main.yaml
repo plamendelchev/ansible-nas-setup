@@ -1,0 +1,11 @@
+---
+nas_device: /dev/sda
+nas_backup_device: /dev/sdb
+
+nas_device_label: NAS
+nas_backup_device_label: NAS-backup
+
+nas_mountpoint: /nas
+nas_backup_mountpoint: /nas-backup
+
+nas_user: nas

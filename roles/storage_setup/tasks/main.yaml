@@ -1,0 +1,25 @@
+---
+- name: Install kernel
+  import_tasks: kernel.yaml
+  tags:
+    - kernel
+
+- name: Install packages
+  import_tasks: packages.yaml
+  tags:
+    - packages
+
+- name: Format drives
+  import_tasks: format.yaml
+  tags:
+    - format
+
+- name: Create subvolumes
+  import_task: subvolumes.yaml
+  tags:
+    - subvolumes
+
+- name: Mount subvolumes
+  import_task: mount.yaml
+  tags:
+    - mount
