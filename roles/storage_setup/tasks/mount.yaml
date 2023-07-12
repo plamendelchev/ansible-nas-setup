@@ -1,4 +1,13 @@
 ---
+- name: Create mountpoint
+  file:
+    path: "{{ nas_mountpoint }}"
+    state: directory
+    mode: "0770"
+    owner: "{{ nas_user }}"
+    group: "{{ nas_user }}"
+
+
 - name: Create fstab entry and mount root subvolume
   mount:
     src: "LABEL={{ nas_device_label }}"
