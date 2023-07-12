@@ -5,8 +5,3 @@
 - name: Reload systemd daemon
   systemd:
     daemon_reload: true
-
-- name: Unmount FS
-  mount:
-    path: /nas
-    state: unmounted
