@@ -17,67 +17,25 @@
     dump: 0
     passno: 0
     state: mounted
+  notify: Reload systemd daemon
 
-- name: Create fstab entry and mount snapshots subvolume
+- name: Create fstab entries and mount subvolumes
   mount:
     src: "LABEL={{ nas_device_label }}"
-    path: "{{ nas_mountpoint }}/.snapshots"
+    path: "{{ nas_mountpoint }}/{{ item.value }}"
     fstype: btrfs
-    opts: defaults,noatime,subvol=@snapshots,compress=zstd:1
+    opts: "defaults,noatime,subvol=@{{ item.key }},compress=zstd:1"
     dump: 0
     passno: 0
     state: mounted
+  loop: "{{ btrfs_subvolumes | dict2items }}"
+  notify: Reload systemd daemon
 
-- name: Create fstab entry and mount docker subvolume
-  mount:
-    src: "LABEL={{ nas_device_label }}"
-    path: "{{ nas_mountpoint }}/docker"
-    fstype: btrfs
-    opts: defaults,noatime,subvol=@docker,compress=zstd:1
-    dump: 0
-    passno: 0
-    state: mounted
 
-- name: Create fstab entry and mount images subvolume
-  mount:
-    src: "LABEL={{ nas_device_label }}"
-    path: "{{ nas_mountpoint }}/images"
-    fstype: btrfs
-    opts: defaults,noatime,subvol=@images,compress=zstd:1
-    dump: 0
-    passno: 0
-    state: mounted
-
-- name: Create fstab entry and mount videos subvolume
-  mount:
-    src: "LABEL={{ nas_device_label }}"
-    path: "{{ nas_mountpoint }}/videos"
-    fstype: btrfs
-    opts: defaults,noatime,subvol=@videos,compress=zstd:1
-    dump: 0
-    passno: 0
-    state: mounted
-
-- name: Create fstab entry and mount documents subvolume
-  mount:
-    src: "LABEL={{ nas_device_label }}"
-    path: "{{ nas_mountpoint }}/documents"
-    fstype: btrfs
-    opts: defaults,noatime,subvol=@documents,compress=zstd:1
-    dump: 0
-    passno: 0
-    state: mounted
-
-- name: Create fstab entry and mount media subvolume
-  mount:
-    src: "LABEL={{ nas_device_label }}"
-    path: "{{ nas_mountpoint }}/media"
-    fstype: btrfs
-    opts: defaults,noatime,subvol=@media,compress=zstd:1
-    dump: 0
-    passno: 0
-    state: mounted
-
-- name: Reload systemd daemon
-  systemd:
-    daemon_reload: true
+- name: Chown subdirectories of "{{ nas_mountpoint }}"
+  file:
+    path: "{{ nas_mountpoint }}/{{ item.value }}"
+    state: directory
+    owner: "{{ nas_user }}"
+    group: "{{ nas_user }}"
+  loop: "{{ btrfs_subvolumes | dict2items }}"

@@ -9,3 +9,11 @@ nas_mountpoint: /nas
 nas_backup_mountpoint: /nas-backup
 
 nas_user: nas
+
+btrfs_subvolumes: # name: mountpoint
+  snapshots: .snapshots
+  docker: docker
+  images: images
+  videos: videos
+  documents: documents
+  media: media
