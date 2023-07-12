@@ -68,3 +68,7 @@
     dump: 0
     passno: 0
     state: mounted
+
+- name: Reload systemd daemon
+  systemd:
+    daemon_reload: true
