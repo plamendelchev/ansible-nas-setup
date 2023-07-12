@@ -15,11 +15,11 @@
     - format
 
 - name: Create subvolumes
-  import_task: subvolumes.yaml
+  import_tasks: subvolumes.yaml
   tags:
     - subvolumes
 
 - name: Mount subvolumes
-  import_task: mount.yaml
+  import_tasks: mount.yaml
   tags:
     - mount
